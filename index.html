@@ -678,12 +678,9 @@
           <img data-rand-photo="info" src="./photo9.jpg" alt="婚宴主視覺照片">
         </div>
         <div class="collage-inlay-video">
-          
-            <video autoplay muted loop playsinline poster="./photo4.jpg">
-            <source src="./video3.mov" type="video/quicktime">
-            <source src="./video3.mp4" type="video/mp4">
+          <video autoplay muted loop playsinline poster="./photo8.jpg">
+            <source src="./video3.mp4" type="video/quicktime">
           </video>
-          <span class="reverse-badge">REWIND</span>
         </div>
       </div>
 
@@ -813,54 +810,7 @@
     onScroll();
   })();
 
-// ---- 3. video3 倒敘播放（相容性強化版） ----
-(function initReverseVideo() {
-  var v3 = document.getElementById("video3-reverse");
-  if (!v3) return;
 
-  var direction = -1;
-  var lastTime = null;
-  var started = false;
-
-  function startLoop() {
-    if (started) return;
-    if (!v3.duration || !isFinite(v3.duration) || v3.duration <= 0) return;
-    started = true;
-    try {
-      v3.currentTime = Math.max(0, v3.duration - 0.05);
-    } catch (e) {
-      v3.currentTime = 0;
-    }
-    requestAnimationFrame(step);
-  }
-
-  v3.addEventListener("loadedmetadata", startLoop);
-  v3.addEventListener("canplay", startLoop);
-  if (v3.readyState >= 2) {
-    startLoop();
-  }
-
-  function step(timestamp) {
-    if (!lastTime) lastTime = timestamp;
-    var dt = Math.min((timestamp - lastTime) / 1000, 0.1);
-    lastTime = timestamp;
-
-    if (v3.readyState >= 2 && v3.duration && isFinite(v3.duration)) {
-      var nextTime = v3.currentTime + direction * dt;
-      if (nextTime <= 0.03) {
-        nextTime = 0.03;
-        nextTime = v3.duration - 0.03;
-      } else if (nextTime >= v3.duration - 0.03) {
-        nextTime = v3.duration - 0.03;
-        direction = -1;
-      }
-      try {
-        v3.currentTime = nextTime;
-      } catch (e) {}
-    }
-    requestAnimationFrame(step);
-  }
-})();
 
   // ---- 倒數計時 ----
   var target = new Date("2027-01-31T12:00:00+08:00").getTime();
