@@ -538,21 +538,20 @@
     position:relative;
     padding-bottom:36px;
   }
-.collage-main-photo{
-  width:82%;            /* 維持原本寬度，若想看更大可調成 88% 或 90% */
-  height:auto;          /* 移除固定高度，依照片原始比例決定高度 */
-  aspect-ratio:unset;   /* 取消原本強制鎖定的 3 / 4 比例 */
-  border-radius:3px;
-  overflow:hidden;
-  box-shadow:0 18px 42px rgba(42,30,18,0.16);
-}
-
-.collage-main-photo img{
-  width:100%;
-  height:auto;          /* 讓高度隨寬度等比例縮放，絕不裁切 */
-  object-fit:contain;   /* 確保整張圖完整呈現 */
-  display:block;
-}
+  .collage-main-photo{
+    width:82%;            /* 維持原本寬度，若想看更大可調成 88% 或 90% */
+    height:auto;          /* 移除固定高度，依照片原始比例決定高度 */
+    aspect-ratio:unset;   /* 取消原本強制鎖定的 3 / 4 比例 */
+    border-radius:3px;
+    overflow:hidden;
+    box-shadow:0 18px 42px rgba(42,30,18,0.16);
+  }
+  .collage-main-photo img{
+    width:100%;
+    height:auto;          /* 讓高度隨寬度等比例縮放，絕不裁切 */
+    object-fit:contain;   /* 確保整張圖完整呈現 */
+    display:block;
+  }
   .collage-inlay-video{
     position:absolute;
     right:0;
@@ -651,7 +650,7 @@
   }
 
   @media (max-width:740px){
-  .hero{
+    .hero{
       min-height:auto;
       padding:0 20px 56px;
     }
@@ -678,7 +677,6 @@
       padding:0 16px;
     }
 
-
     section{padding:76px 0 68px;}
     .editorial-grid,
     .info-layout{
@@ -687,13 +685,17 @@
     }
     .inlay-video-wrap{width:100%;}
     .editorial-showcase{
-    padding-bottom:84px;
+      padding-bottom:84px;
     }
-    .editorial-showcase::after{height:230px; /* 原本是 150px，可視字數與間距微調為 210px～260px */
-    clip-path:polygon(0 28%, 100% 0%, 100% 100%, 0% 100%);}
-    .editorial-bottom-note{text-align:center;
-    margin-top:32px;
-    text-shadow:0 2px 8px rgba(0,0,0,0.45);}
+    .editorial-showcase::after{
+      height:230px;
+      clip-path:polygon(0 28%, 100% 0%, 100% 100%, 0% 100%);
+    }
+    .editorial-bottom-note{
+      text-align:center;
+      margin-top:32px;
+      text-shadow:0 2px 8px rgba(0,0,0,0.45);
+    }
     .photo-item{
       width:165px;
     }
@@ -701,26 +703,25 @@
       gap:14px;
     }
     .about-bg{
-    inset:0;                        /* 不需要上下超出，對齊區塊即可 */
-    background-repeat:no-repeat;    /* 絕不重複平鋪 */
-    background-size:100% auto;      /* 寬度貼齊螢幕、高度依原比例縮小，完整看得出構圖 */
-    background-position:center 38%; /* 垂直位置置中偏上，可依需求微調百分比 */
-    filter:blur(7px);               /* 維持原本的模糊程度 */
-    transform:none !important;      /* 手機版關閉上下位移，避免照片跑出畫面 */
-    } 
+      inset:0;                        /* 不需要上下超出，對齊區塊即可 */
+      background-repeat:no-repeat;    /* 絕不重複平鋪 */
+      background-size:100% auto;      /* 寬度貼齊螢幕、高度依原比例縮小，完整看得出構圖 */
+      background-position:center 38%; /* 垂直位置置中偏上，可依需求微調百分比 */
+      filter:blur(7px);               /* 維持原本的模糊程度 */
+      transform:none !important;      /* 手機版關閉上下位移，避免照片跑出畫面 */
+    }
     .about-bg::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    /* 上下邊緣融合進奶油底色，中央保持半透明讓模糊照片與文字都清晰 */
-    background:linear-gradient(
-      to bottom,
-      var(--cream) 0%,
-      rgba(246, 241, 231, 0.62) 22%,
-      rgba(246, 241, 231, 0.62) 78%,
-      var(--cream) 100%
-    );
-  }
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to bottom,
+        var(--cream) 0%,
+        rgba(246, 241, 231, 0.62) 22%,
+        rgba(246, 241, 231, 0.62) 78%,
+        var(--cream) 100%
+      );
+    }
     @keyframes singleRowMarquee{
       0%{transform:translateX(0);}
       100%{transform:translateX(calc(-50% - 7px));}
@@ -771,7 +772,7 @@
           從台南校園的初遇，到各自奔赴不同城市的四年遠距，每一次相聚都成為我們走向彼此的印記。
         </p>
         <div class="inlay-video-wrap reveal reveal-delay-2">
-          <video autoplay muted loop playsinline preload="metadata" poster="./photo4.jpg">
+          <video autoplay muted loop playsinline preload="auto" poster="./photo4.jpg">
             <source src="./video1.mov" type="video/quicktime">
           </video>
         </div>
@@ -841,7 +842,7 @@
 
 <!-- ============ 2. 仿圖片2：video2.mov 模糊循環背景 + 文字 ============ -->
 <section class="video-banner" id="quote-banner">
-  <video autoplay muted loop playsinline preload="metadata" poster="./photo4.jpg">
+  <video autoplay muted loop playsinline preload="auto" poster="./photo4.jpg">
     <source src="./video2.mov" type="video/quicktime">
   </video>
   <div class="overlay-tint"></div>
@@ -869,7 +870,7 @@
           <img data-rand-photo="info" src="./photo3.jpg" alt="婚宴主視覺照片">
         </div>
         <div class="collage-inlay-video reveal reveal-delay-1">
-          <video autoplay muted loop playsinline preload="metadata" poster="./photo4.jpg">
+          <video autoplay muted loop playsinline preload="auto" poster="./photo4.jpg">
             <source src="./video3.mp4" type="video/quicktime">
           </video>
         </div>
@@ -976,7 +977,7 @@
         var offset = window.innerWidth <= 740 ? 0 : Math.min(scrollY * 0.25, 120);
         heroA.style.transform = "translateY(" + offset + "px)";
         heroB.style.transform = "translateY(" + offset + "px)";
-        var switchThreshold = window.innerWidth <= 740 ? 40 : 120; // 手機滑 80px 就換圖，可自行改成 60 或 150
+        var switchThreshold = window.innerWidth <= 740 ? 40 : 120;
         if (scrollY > switchThreshold) {
           heroB.classList.add("is-visible");
         } else {
@@ -997,7 +998,7 @@
         }
       }
 
-// 「關於我們」單排9張照片：一張一張慢慢顯現 -> 全部顯現完畢（最後）才開始輪動
+      // 「關於我們」單排9張照片：一張一張慢慢顯現 -> 全部顯現完畢（最後）才開始輪動
       if (aboutShowcase) {
         var showcaseRect = aboutShowcase.getBoundingClientRect();
         var isMobile = window.innerWidth <= 740;
@@ -1070,6 +1071,28 @@
   }
   tick();
   setInterval(tick, 1000);
+
+  // ---- 4. 首屏載入完成後，背景預先載入後續圖片與影片 ----
+  window.addEventListener("load", function() {
+    var photosToPreload = [
+      "./photo1.jpg", "./photo2.jpg", "./photo3.jpg",
+      "./photo4.jpg", "./photo5.jpg", "./photo6.jpg",
+      "./photo7.jpg", "./photo8.jpg", "./photo9.jpg"
+    ];
+
+    photosToPreload.forEach(function(src) {
+      var img = new Image();
+      img.src = src;
+    });
+
+    var videos = document.querySelectorAll("video");
+    videos.forEach(function(video) {
+      video.preload = "auto";
+      if (video.readyState < 3) {
+        video.load();
+      }
+    });
+  });
 </script>
 </body>
 </html>
