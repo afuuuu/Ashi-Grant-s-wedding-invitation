@@ -378,6 +378,7 @@
     position:absolute;
     inset:-15% 0;
     background-image:url('./photo8.jpg');
+    background-repeat:no-repeat;
     background-size:cover;
     background-position:center;
     filter:blur(8px);
@@ -485,6 +486,7 @@
   .photo-item img{
     width:100%;
     height:100%;
+    object-position:var(--pos, center); /* 預設為 center，可被個別覆寫 */
     object-fit:cover;
     display:block;
     transition:transform 0.6s ease;
@@ -669,7 +671,8 @@
     }
     .about-bg{
     /* 讓 photo8.jpg 以較完整的比例出現在手機版，避免被過度放大裁切 */
-    background-size:92% auto;
+    background-repeat:no-repeat;
+    background-size:cover;
     background-position:center 35%;
     filter:blur(5px);
     } 
@@ -775,9 +778,9 @@
     <div class="single-marquee-row" id="single-marquee-row">
       <div class="single-marquee-track">
         <!-- 原始 1~9 張（依序慢速顯現） -->
-
+        <div class="photo-item" style="transition-delay:0.10s; --pos:left;"><img src="./photo1.jpg" alt="回憶相片2"></div>
         <div class="photo-item" style="transition-delay:0.45s"><img src="./photo2.jpg" alt="回憶相片2"></div>
-
+        <div class="photo-item" style="transition-delay:0.80s; --pos:center 0%;"><img src="./photo3.jpg" alt="回憶相片2"></div>
         <div class="photo-item" style="transition-delay:1.15s"><img src="./photo4.jpg" alt="回憶相片4"></div>
         <div class="photo-item" style="transition-delay:1.50s"><img src="./photo5.jpg" alt="回憶相片5"></div>
         <div class="photo-item" style="transition-delay:1.85s"><img src="./photo6.jpg" alt="回憶相片6"></div>
@@ -786,9 +789,9 @@
         <div class="photo-item" style="transition-delay:2.90s"><img src="./photo9.jpg" alt="回憶相片9"></div>
 
         <!-- 無縫循環輪播複製組（全部顯現完畢開始輪動時啟用） -->
-
+        <div class="photo-item is-clone" style="--pos:left;"><img src="./photo1.jpg" alt="回憶相片4"></div>
         <div class="photo-item is-clone"><img src="./photo2.jpg" alt="回憶相片2"></div>
-
+        <div class="photo-item is-clone" style="--pos:center 0%;"><img src="./photo3.jpg" alt="回憶相片4"></div>
         <div class="photo-item is-clone"><img src="./photo4.jpg" alt="回憶相片4"></div>
         <div class="photo-item is-clone"><img src="./photo5.jpg" alt="回憶相片5"></div>
         <div class="photo-item is-clone"><img src="./photo6.jpg" alt="回憶相片6"></div>
