@@ -667,6 +667,21 @@
     .single-marquee-track{
       gap:14px;
     }
+    .about-bg{
+    /* 讓 photo8.jpg 以較完整的比例出現在手機版，避免被過度放大裁切 */
+    background-size:92% auto;
+    background-position:center 35%;
+    filter:blur(5px);
+    } 
+    .about-bg::after{
+    background:linear-gradient(
+      to bottom,
+      var(--cream) 0%,
+      rgba(246, 241, 231, 0.55) 15%,
+      rgba(246, 241, 231, 0.55) 85%,
+      var(--cream) 100%
+    );
+  }
     @keyframes singleRowMarquee{
       0%{transform:translateX(0);}
       100%{transform:translateX(calc(-50% - 7px));}
