@@ -997,30 +997,38 @@
         }
       }
 
-      // 「關於我們」單排9張照片：一張一張慢慢顯現 -> 全部顯現完畢（最後）才開始輪動
+// 「關於我們」單排9張照片：一張一張慢慢顯現 -> 全部顯現完畢（最後）才開始輪動
       if (aboutShowcase) {
         var showcaseRect = aboutShowcase.getBoundingClientRect();
+        var isMobile = window.innerWidth <= 740;
 
-        // 階段一：滑入視窗後，啟動 1~9 張依序慢速淡入（總進場耗時約 2.9s + 1.2s = 4.1s）
-        if (!hasStartedReveal && showcaseRect.top < winH - 100) {
+        // 手機版提早觸發進場（區塊頂端進入視窗下方 60px 內就開始），桌機維持原本 winH - 100
+        var revealThreshold = isMobile ? winH + 60 : winH - 100;
+        // 手機版縮短等待輪動時間（例如 2200ms），桌機維持 4200ms
+        var marqueeDelay = isMobile ? 2200 : 4200;
+        // 手機版滑到視窗 85% 處就允許輪動，桌機維持 65%
+        var marqueeTrigger = isMobile ? winH * 0.85 : winH * 0.65;
+
+        // 階段一：滑入視窗後，啟動 1~9 張依序慢速淡入
+        if (!hasStartedReveal && showcaseRect.top < revealThreshold) {
           hasStartedReveal = true;
           aboutShowcase.classList.add("is-entered");
 
-          // 等待最後一張（第9張）完全顯現後，才解鎖輪動狀態
+          // 等待顯現完成後，才解鎖輪動狀態
           setTimeout(function() {
             allRevealedReady = true;
-            // 若解鎖時已滑到該區中段或滑過，立即啟動輪動
+            // 若解鎖時已滑到對應位置，立即啟動輪動
             var currentRect = aboutShowcase.getBoundingClientRect();
-            if (currentRect.top < winH * 0.65) {
+            if (currentRect.top < marqueeTrigger) {
               if (singleRow) singleRow.scrollLeft = 0;
               aboutShowcase.classList.add("is-marquee");
             }
-          }, 4200);
+          }, marqueeDelay);
         }
 
-        // 階段二：9張都已顯現完畢，且頁面繼續往下滑時，整排開始依序循環輪動
+        // 階段二：已顯現完畢，且頁面繼續往下滑時，整排開始依序循環輪動
         if (allRevealedReady) {
-          if (showcaseRect.top < winH * 0.65) {
+          if (showcaseRect.top < marqueeTrigger) {
             if (!aboutShowcase.classList.contains("is-marquee")) {
               if (singleRow) singleRow.scrollLeft = 0;
               aboutShowcase.classList.add("is-marquee");
