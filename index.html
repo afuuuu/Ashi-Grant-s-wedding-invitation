@@ -653,8 +653,14 @@
       gap:32px;
     }
     .inlay-video-wrap{width:100%;}
-    .editorial-showcase::after{height:150px;}
-    .editorial-bottom-note{text-align:center;}
+    .editorial-showcase{
+    padding-bottom:84px;
+    }
+    .editorial-showcase::after{height:230px; /* 原本是 150px，可視字數與間距微調為 210px～260px */
+    clip-path:polygon(0 28%, 100% 0%, 100% 100%, 0% 100%);}
+    .editorial-bottom-note{text-align:center;
+    margin-top:32px;
+    text-shadow:0 2px 8px rgba(0,0,0,0.45);}
     .photo-item{
       width:165px;
     }
