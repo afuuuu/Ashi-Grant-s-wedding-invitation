@@ -648,6 +648,34 @@
   }
 
   @media (max-width:740px){
+  .hero{
+      min-height:auto;
+      padding:0 20px 56px;
+    }
+    .hero-photo{
+      width:100vw;
+      height:auto;          /* 取消固定高，改由照片原始比例決定高度 */
+      min-height:unset;     /* 移除原本的 min-height: 440px */
+      aspect-ratio:3 / 2;   /* 符合一般橫式照片比例（若為 4:3 可改 4 / 3） */
+      margin-bottom:28px;
+    }
+    .hero-photo img{
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:contain;   /* 完整顯示整張照片，絕不裁切左右 */
+      object-position:center;
+    }
+    .hero-photo::after{
+      height:22%;           /* 縮小底部漸層高度，避免遮住照片下半部 */
+    }
+    .hero-caption{
+      bottom:6%;
+      font-size:15px;
+      padding:0 16px;
+    }
+
+
     section{padding:76px 0 68px;}
     .editorial-grid,
     .info-layout{
@@ -670,18 +698,23 @@
       gap:14px;
     }
     .about-bg{
-    /* 讓 photo8.jpg 以較完整的比例出現在手機版，避免被過度放大裁切 */
-    background-repeat:no-repeat;
-    background-size:cover;
-    background-position:center 35%;
-    filter:blur(5px);
+    inset:0;                        /* 不需要上下超出，對齊區塊即可 */
+    background-repeat:no-repeat;    /* 絕不重複平鋪 */
+    background-size:100% auto;      /* 寬度貼齊螢幕、高度依原比例縮小，完整看得出構圖 */
+    background-position:center 38%; /* 垂直位置置中偏上，可依需求微調百分比 */
+    filter:blur(7px);               /* 維持原本的模糊程度 */
+    transform:none !important;      /* 手機版關閉上下位移，避免照片跑出畫面 */
     } 
     .about-bg::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    /* 上下邊緣融合進奶油底色，中央保持半透明讓模糊照片與文字都清晰 */
     background:linear-gradient(
       to bottom,
       var(--cream) 0%,
-      rgba(246, 241, 231, 0.55) 15%,
-      rgba(246, 241, 231, 0.55) 85%,
+      rgba(246, 241, 231, 0.62) 22%,
+      rgba(246, 241, 231, 0.62) 78%,
       var(--cream) 100%
     );
   }
@@ -937,10 +970,11 @@
 
       // 0. Hero 封面視差與切換
       if (heroStage && heroA && heroB) {
-        var offset = Math.min(scrollY * 0.25, 120);
+        var offset = window.innerWidth <= 740 ? 0 : Math.min(scrollY * 0.25, 120);
         heroA.style.transform = "translateY(" + offset + "px)";
         heroB.style.transform = "translateY(" + offset + "px)";
-        if (scrollY > 120) {
+        var switchThreshold = window.innerWidth <= 740 ? 40 : 120; // 手機滑 80px 就換圖，可自行改成 60 或 150
+        if (scrollY > switchThreshold) {
           heroB.classList.add("is-visible");
         } else {
           heroB.classList.remove("is-visible");
