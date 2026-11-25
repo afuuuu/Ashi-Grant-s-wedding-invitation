@@ -722,6 +722,19 @@
         var(--cream) 100%
       );
     }
+    .about-showcase.is-marquee .single-marquee-row{
+      overflow-x:auto;
+      overflow-y:hidden;
+      -webkit-overflow-scrolling:touch;
+      scroll-behavior:auto;
+      padding:12px 16px 20px;
+      -webkit-mask-image:linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
+      mask-image:linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
+    }
+    /* 使用者正在手機上滑動時，暫停 CSS 自動位移，避免與手指拉扯打架 */
+    .about-showcase.is-marquee.is-touch-scrolling .single-marquee-track{
+      animation-play-state:paused;
+    }
     @keyframes singleRowMarquee{
       0%{transform:translateX(0);}
       100%{transform:translateX(calc(-50% - 7px));}
@@ -964,6 +977,8 @@
     var aboutShowcase = document.getElementById("about-showcase");
     var singleRow = document.getElementById("single-marquee-row");
     var parallaxItems = document.querySelectorAll(".parallax-photo img");
+    
+    var resumeMarqueeTimer = null;
 
     var hasStartedReveal = false;
     var allRevealedReady = false;
@@ -1039,6 +1054,35 @@
           }
         }
       }
+
+      // 手機端：滑動照片列時暫停自動輪動，放開一會兒後再恢復
+      if (singleRow && aboutShowcase) {
+      var pauseForTouch = function() {
+        if (window.innerWidth <= 740) {
+          aboutShowcase.classList.add("is-touch-scrolling");
+          if (resumeMarqueeTimer) {
+            clearTimeout(resumeMarqueeTimer);
+            resumeMarqueeTimer = null;
+          }
+        }
+      };
+
+      var scheduleResumeMarquee = function() {
+        if (window.innerWidth <= 740) {
+          if (resumeMarqueeTimer) clearTimeout(resumeMarqueeTimer);
+          resumeMarqueeTimer = setTimeout(function() {
+            aboutShowcase.classList.remove("is-touch-scrolling");
+          }, 1500);
+        }
+      };
+
+      singleRow.addEventListener("touchstart", pauseForTouch, { passive: true });
+      singleRow.addEventListener("touchmove", pauseForTouch, { passive: true });
+      singleRow.addEventListener("touchend", scheduleResumeMarquee, { passive: true });
+      singleRow.addEventListener("touchcancel", scheduleResumeMarquee, { passive: true });
+      }
+
+
 
       // 其他寫真視差微調
       parallaxItems.forEach(function(img) {
