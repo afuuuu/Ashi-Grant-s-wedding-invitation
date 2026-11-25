@@ -726,7 +726,6 @@
       overflow-x:auto;
       overflow-y:hidden;
       -webkit-overflow-scrolling:touch;
-      scroll-behavior:auto;
       padding:12px 16px 20px;
       -webkit-mask-image:linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
       mask-image:linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
@@ -979,6 +978,8 @@
     var parallaxItems = document.querySelectorAll(".parallax-photo img");
     
     var resumeMarqueeTimer = null;
+    var marqueeTrack = aboutShowcase ? aboutShowcase.querySelector(".single-marquee-track") : null;
+
 
     var hasStartedReveal = false;
     var allRevealedReady = false;
@@ -1056,30 +1057,49 @@
       }
 
       // 手機端：滑動照片列時暫停自動輪動，放開一會兒後再恢復
-      if (singleRow && aboutShowcase) {
+      if (singleRow && aboutShowcase && marqueeTrack) {
       var pauseForTouch = function() {
-        if (window.innerWidth <= 740) {
-          aboutShowcase.classList.add("is-touch-scrolling");
-          if (resumeMarqueeTimer) {
-            clearTimeout(resumeMarqueeTimer);
-            resumeMarqueeTimer = null;
-          }
+        if (window.innerWidth > 740) return;
+        aboutShowcase.classList.add("is-touch-scrolling");
+        marqueeTrack.style.animationPlayState = "paused";
+        if (resumeMarqueeTimer) {
+          clearTimeout(resumeMarqueeTimer);
+          resumeMarqueeTimer = null;
         }
       };
 
-      var scheduleResumeMarquee = function() {
-        if (window.innerWidth <= 740) {
-          if (resumeMarqueeTimer) clearTimeout(resumeMarqueeTimer);
-          resumeMarqueeTimer = setTimeout(function() {
-            aboutShowcase.classList.remove("is-touch-scrolling");
-          }, 1500);
+      var resumeMarqueeNow = function() {
+        if (window.innerWidth > 740) return;
+        aboutShowcase.classList.remove("is-touch-scrolling");
+
+        // 若使用者有用手指橫向滑動過 scrollLeft，先平滑拉回 0 再恢復動畫，避免與 translateX 疊加錯位
+        if (singleRow.scrollLeft > 0) {
+          singleRow.scrollTo({ left: 0, behavior: "smooth" });
         }
+
+        // 強制觸發一次動畫重啟，確保手機瀏覽器不會卡在 paused 狀態
+        marqueeTrack.style.animation = "none";
+        void marqueeTrack.offsetWidth; // 觸發 reflow
+        marqueeTrack.style.animation = "";
+        marqueeTrack.style.animationPlayState = "running";
+      };
+
+      var scheduleResumeMarquee = function() {
+        if (window.innerWidth > 740) return;
+        if (resumeMarqueeTimer) clearTimeout(resumeMarqueeTimer);
+        resumeMarqueeTimer = setTimeout(resumeMarqueeNow, 1500);
       };
 
       singleRow.addEventListener("touchstart", pauseForTouch, { passive: true });
       singleRow.addEventListener("touchmove", pauseForTouch, { passive: true });
       singleRow.addEventListener("touchend", scheduleResumeMarquee, { passive: true });
       singleRow.addEventListener("touchcancel", scheduleResumeMarquee, { passive: true });
+      singleRow.addEventListener("scroll", function() {
+        if (window.innerWidth <= 740 && aboutShowcase.classList.contains("is-marquee")) {
+          pauseForTouch();
+          scheduleResumeMarquee();
+        }
+      }, { passive: true });
       }
 
 
