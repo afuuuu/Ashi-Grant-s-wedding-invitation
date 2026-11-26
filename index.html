@@ -376,7 +376,7 @@
   }
   .about-bg{
     position:absolute;
-    inset:-15% 0;
+    inset:0;
     background-image:url('./photo2.jpg');
     background-repeat:no-repeat;
     background-size:cover;
@@ -1002,17 +1002,27 @@
       }
 
       // 「關於我們」背景隨著滑動顯示模糊的 photo8.jpg
-      if (aboutSec && aboutBg) {
-        var aboutRect = aboutSec.getBoundingClientRect();
-        if (aboutRect.top < winH && aboutRect.bottom > 0) {
-          var visibleProgress = Math.min(1, Math.max(0, (winH - aboutRect.top) / (winH * 0.65)));
-          aboutBg.style.opacity = (visibleProgress * 0.85).toFixed(2);
-          var bgShift = (aboutRect.top / winH) * 45;
-          aboutBg.style.transform = "translateY(" + bgShift.toFixed(1) + "px) scale(1.08)";
-        } else {
-          aboutBg.style.opacity = "0";
+        if (aboutSec && aboutBg) {
+          var aboutRect = aboutSec.getBoundingClientRect();
+          var secHeight = aboutRect.height || 1;
+
+          if (aboutRect.top < winH && aboutRect.bottom > 0) {
+            // 區塊頂端往上滑過外框高度的 35% 開始浮現，滑到 75% 左右達到滿進度（可依喜好調整 0.35 / 0.4）
+            var enteredDistance = winH - aboutRect.top;
+            var startAt = secHeight * 0.55;
+            var span = secHeight * 0.3;
+            var visibleProgress = Math.min(1, Math.max(0, (enteredDistance - startAt) / span));
+
+            aboutBg.style.opacity = (visibleProgress * 0.95).toFixed(2);
+
+            if (window.innerWidth > 740) {
+              var bgShift = ((winH * 0.5 - aboutRect.top) / secHeight) * 36;
+              aboutBg.style.transform = "translateY(" + bgShift.toFixed(1) + "px) scale(1.06)";
+            }
+          } else {
+            aboutBg.style.opacity = "0";
+          }
         }
-      }
 
       // 「關於我們」單排9張照片：一張一張慢慢顯現 -> 全部顯現完畢（最後）才開始輪動
       if (aboutShowcase) {
